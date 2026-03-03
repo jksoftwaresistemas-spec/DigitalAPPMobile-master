@@ -7,7 +7,6 @@ import {
     Platform,
     StatusBar,
     KeyboardAvoidingView,
-    Alert,
     ActivityIndicator
 } from 'react-native';
 import { Image } from 'expo-image';
@@ -21,19 +20,35 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { SweetModal } from '@/components/SweetModal'; // Certifique-se que o arquivo existe
 
 export default function LoginScreen() {
     const router = useRouter();
+
+    // Estados do Formulário
     const [secureText, setSecureText] = useState(true);
     const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
+    // Estado do Modal (SweetAlert Style)
+    const [modalConfig, setModalConfig] = useState({
+        visible: false,
+        type: 'warning' as 'success' | 'error' | 'warning',
+        title: '',
+        message: ''
+    });
+
+    const showAlert = (type: 'success' | 'error' | 'warning', title: string, message: string) => {
+        setModalConfig({ visible: true, type, title, message });
+    };
+
     const handleLogin = async () => {
         const cleanIdentifier = identifier.trim();
 
+        // Validação de campos vazios
         if (!cleanIdentifier || !password) {
-            Alert.alert("Atenção", "Por favor, preencha todos os campos.");
+            showAlert('warning', 'Atenção', 'Por favor, preencha todos os campos.');
             return;
         }
 
@@ -49,8 +64,8 @@ export default function LoginScreen() {
             await setDoc(doc(db, "usuarios", user.uid), {
                 ultimo_acesso: serverTimestamp(),
                 status: "online",
-                identificacao: cleanIdentifier, 
-                nome: cleanIdentifier.split('@')[0], 
+                identificacao: cleanIdentifier,
+                nome: cleanIdentifier.split('@')[0],
                 plataforma: Platform.OS
             }, { merge: true });
 
@@ -58,21 +73,35 @@ export default function LoginScreen() {
 
         } catch (error: any) {
             let errorMessage = "Erro ao tentar entrar.";
-            if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found') {
+
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
                 errorMessage = "Usuário ou senha incorretos.";
             } else if (error.code === 'auth/too-many-requests') {
                 errorMessage = "Muitas tentativas. Tente novamente mais tarde.";
             }
-            Alert.alert("Erro no Login", errorMessage);
+
+            showAlert('error', 'Erro no Login', errorMessage);
         } finally {
             setLoading(false);
         }
     };
 
+    const handlePagCadastro = () => {
+        router.push("/cadastro");
+    }
+
     return (
         <ThemedView style={{ flex: 1 }}>
-            {/* StatusBar condicional ao fundo do header */}
             <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
+
+            {/* Modal Customizado estilo SweetAlert */}
+            <SweetModal
+                visible={modalConfig.visible}
+                type={modalConfig.type}
+                title={modalConfig.title}
+                message={modalConfig.message}
+                onClose={() => setModalConfig({ ...modalConfig, visible: false })}
+            />
 
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -94,15 +123,13 @@ export default function LoginScreen() {
                         </View>
                     }>
 
-                    {/* Seção Hero (Formulário) */}
                     <ThemedView style={styles.heroSection}>
                         <ThemedText style={styles.heroTitle}>Acesse sua conta</ThemedText>
                         <ThemedText style={styles.descriptionWhite}>
-                            Bem-vindo à <ThemedText style={styles.highlightYellow}>DIGITAL NET</ThemedText>. Insira suas credenciais para gerenciar sua conexão.
+                            Bem-vindo à <ThemedText style={styles.highlightYellow}>DIGITAL NET</ThemedText>. Insira suas credenciais.
                         </ThemedText>
 
                         <View style={styles.modernForm}>
-                            {/* Input Identificação */}
                             <View style={styles.inputGroup}>
                                 <ThemedText style={styles.labelWhite}>Identificação</ThemedText>
                                 <View style={styles.modernInputWrapper}>
@@ -112,7 +139,6 @@ export default function LoginScreen() {
                                         placeholderTextColor="rgba(255,255,255,0.4)"
                                         style={styles.modernInput}
                                         keyboardType="email-address"
-                                        selectionColor="#f3b41b"
                                         value={identifier}
                                         onChangeText={setIdentifier}
                                         autoCapitalize="none"
@@ -121,7 +147,6 @@ export default function LoginScreen() {
                                 </View>
                             </View>
 
-                            {/* Input Senha */}
                             <View style={styles.inputGroup}>
                                 <ThemedText style={styles.labelWhite}>Sua Senha</ThemedText>
                                 <View style={styles.modernInputWrapper}>
@@ -131,43 +156,46 @@ export default function LoginScreen() {
                                         placeholderTextColor="rgba(255,255,255,0.4)"
                                         style={styles.modernInput}
                                         secureTextEntry={secureText}
-                                        selectionColor="#f3b41b"
                                         value={password}
                                         onChangeText={setPassword}
                                     />
-                                    <TouchableOpacity
-                                        onPress={() => setSecureText(!secureText)}
-                                        style={styles.modernEyeIcon}
-                                    >
-                                        <Ionicons
-                                            name={secureText ? "eye-off" : "eye"}
-                                            size={20}
-                                            color="#f3b41b"
-                                        />
+                                    <TouchableOpacity onPress={() => setSecureText(!secureText)}>
+                                        <Ionicons name={secureText ? "eye-off" : "eye"} size={20} color="#f3b41b" />
                                     </TouchableOpacity>
                                 </View>
                             </View>
 
-                            {/* Botão de Login (Hero Button Style) */}
                             <TouchableOpacity
                                 style={[styles.heroButton, loading && { opacity: 0.7 }]}
-                                activeOpacity={0.8}
                                 onPress={handleLogin}
+                                disabled={loading}
+                            >
+                                {loading ? <ActivityIndicator color="#091e56" /> : (
+                                    <>
+                                        <ThemedText style={styles.heroButtonText}>ENTRAR</ThemedText>
+                                        <Ionicons name="arrow-forward" size={18} color="#091e56" />
+                                    </>
+                                )}
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={[styles.heroButton, styles.secondaryButton, loading && { opacity: 0.7 }]}
+                                activeOpacity={0.8}
+                                onPress={handlePagCadastro}
                                 disabled={loading}
                             >
                                 {loading ? (
                                     <ActivityIndicator color="#091e56" />
                                 ) : (
                                     <>
-                                        <ThemedText style={styles.heroButtonText}>ENTRAR NO APP</ThemedText>
-                                        <Ionicons name="arrow-forward" size={18} color="#091e56" />
+                                        <ThemedText style={styles.heroButtonText}>CADASTRE-SE</ThemedText>
+                                        <Ionicons name="person-add-outline" size={18} color="#091e56" />
                                     </>
                                 )}
                             </TouchableOpacity>
                         </View>
                     </ThemedView>
 
-                    {/* Rodapé Igual à Home */}
                     <ThemedView style={styles.footer}>
                         <ThemedText style={styles.footerText}>DIGITAL NET - Todos os direitos reservados © 2026</ThemedText>
                     </ThemedView>
@@ -176,6 +204,8 @@ export default function LoginScreen() {
         </ThemedView>
     );
 }
+
+// ... (seus estilos permanecem os mesmos abaixo)
 
 const styles = StyleSheet.create({
     headerContent: {
@@ -274,7 +304,7 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     heroButton: {
-        backgroundColor: '#f3b41b',
+        backgroundColor: '#f3b41b', // Cor do botão ENTRAR (Amarelo)
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -284,8 +314,12 @@ const styles = StyleSheet.create({
         gap: 10,
         elevation: 4,
     },
+    secondaryButton: {
+        backgroundColor: '#FFFFFF', // Cor do botão CADASTRE-SE (Branco)
+        marginTop: 12, // Um pouco mais de espaçamento entre eles
+    },
     heroButtonText: {
-        color: '#091e56',
+        color: '#091e56', // Azul escuro mantido para ambos
         fontFamily: 'PoppinsBold',
         fontSize: 15,
     },
