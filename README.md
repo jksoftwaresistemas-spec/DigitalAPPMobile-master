@@ -1,50 +1,76 @@
-# Welcome to your Expo app 👋
+<h1 align="center">Digital Net App</h1>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<p align="center">
+Aplicativo oficial da <strong>Digital Net Mobile</strong><br>
+</p>
 
-## Get started
+<hr>
 
-1. Install dependencies
+<h2>📱 Sobre o Projeto</h2>
 
-   ```bash
-   npm install
-   ```
+<p>
+O <strong>Digital Net App</strong> está sendo desenvolvido para oferecer aos clientes
+uma experiência moderna, rápida e segura.
+</p>
 
-2. Start the app
+<p>
+v0.0.0.1</p>
 
-   ```bash
-   npx expo start
-   ```
+<ul>
+  <li>Tela de Login e Integração com Firebase Authentication</li>
+  <li>Use: <p>Usuário: kaio@kaio.com</p> <p>Senha: kaio123</p></li>
+</ul>
 
-In the output, you'll find options to open the app in a
+<hr>
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+<h2>📦 Builds Disponíveis</h2>
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+<div style="border:1px solid #ddd; padding:20px; border-radius:10px;">
 
-## Get a fresh project
+<h3>🟢 Versão 0.0.0.1</h3>
 
-When you're ready, run:
+<p><strong>Implementação:</strong> Integração da Tela de Login</p>
 
-```bash
-npm run reset-project
-```
+<p>
+Primeira build oficial contendo autenticação funcional via Firebase.
+</p>
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+<br>
 
-## Learn more
+<p align="center">
+  <a href="https://wf-artifacts.eascdn.net/builds/store-rg/870843e7-6c5e-4b7e-a0ab-b72c7bde788a/62d1e718-fe0b-42fc-b411-637dbce3e470/019cb4c5-3245-714d-afe6-c2116e85f309/application-62d1e718-fe0b-42fc-b411-637dbce3e470.apk?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=75d871a1a44e598975dd84fa2341c9b0%2F20260303%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260303T173615Z&X-Amz-Expires=900&X-Amz-Signature=1e13ddb819191238580d0d5b0c86b65935634d7762e0b6270e9ffbd818306033&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject">
+    <img src="https://img.shields.io/badge/📥%20Baixar%20APK-0.0.0.1-blue?style=for-the-badge">
+  </a>
+</p>
 
-To learn more about developing your project with Expo, look at the following resources:
+<p align="center">
+<strong>📌 APK Instalável (Android)</strong>
+</p>
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+</div>
 
-## Join the community
+<hr>
 
-Join our community of developers creating universal apps.
+<h2>🛠 Tecnologias Utilizadas</h2>
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+<ul>
+  <li>React Native</li>
+  <li>Expo</li>
+  <li>Firebase Authentication</li>
+  <li>TypeScript</li>
+</ul>
+
+<hr>
+
+<h2>👨‍💻 Desenvolvedor</h2>
+
+<p>
+Desenvolvido por <strong>Kaio Andrião Dalfior</strong><br>
+JK Softwares
+</p>
+
+<hr>
+
+<p align="center">
+📌 Projeto em desenvolvimento contínuo.
+</p>
