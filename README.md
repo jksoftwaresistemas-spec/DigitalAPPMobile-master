@@ -31,7 +31,7 @@ v0.0.0.1</p>
 
 <p><strong>Implementação:</strong> Integração da Tela de Login</p>
 
-<p>
+<p align="center">
 Primeira build oficial contendo autenticação funcional do protótipo via Firebase.
 </p>
 
