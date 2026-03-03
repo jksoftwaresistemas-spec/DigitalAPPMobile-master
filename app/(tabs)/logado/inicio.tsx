@@ -30,11 +30,17 @@ export default function InicioScreen() {
             try {
                 const user = auth.currentUser;
                 if (user) {
-                    const userDoc = await getDoc(doc(db, "usuarios", user.uid));
+                    // ATUALIZADO: Busca na coleção 'clientes'
+                    const userDoc = await getDoc(doc(db, "clientes", user.uid));
+                    
                     if (userDoc.exists()) {
                         const data = userDoc.data();
-                        // Prioriza o nome, se não houver, usa identificação
-                        setUserName(data.nome || data.identificacao || 'Cliente');
+                        // Exibe o nome cadastrado. Se não existir, tenta o e-mail formatado.
+                        const displayTitle = data.nome || user.email?.split('@')[0] || 'Cliente';
+                        setUserName(displayTitle);
+                    } else {
+                        // Caso o documento não exista no Firestore, usa o e-mail do Auth
+                        setUserName(user.email?.split('@')[0] || 'Cliente');
                     }
                 }
             } catch (error) {

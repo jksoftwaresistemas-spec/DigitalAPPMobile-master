@@ -63,6 +63,15 @@ export default function TabLayout() {
         }}
       />
       
+
+      <Tabs.Screen
+        name="cadastro"
+        options={{
+          title: 'Cadastro',
+          href: null, 
+        }}
+      />
+      
     </Tabs>
   );
 }

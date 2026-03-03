@@ -46,7 +46,6 @@ export default function LoginScreen() {
     const handleLogin = async () => {
         const cleanIdentifier = identifier.trim();
 
-        // Validação de campos vazios
         if (!cleanIdentifier || !password) {
             showAlert('warning', 'Atenção', 'Por favor, preencha todos os campos.');
             return;
@@ -61,23 +60,25 @@ export default function LoginScreen() {
             const userCredential = await signInWithEmailAndPassword(auth, finalEmail, password);
             const user = userCredential.user;
 
-            await setDoc(doc(db, "usuarios", user.uid), {
+            // Salva na coleção 'clientes' mantendo dados anteriores
+            await setDoc(doc(db, "clientes", user.uid), {
                 ultimo_acesso: serverTimestamp(),
                 status: "online",
-                identificacao: cleanIdentifier,
-                nome: cleanIdentifier.split('@')[0],
                 plataforma: Platform.OS
             }, { merge: true });
 
             router.replace("/(tabs)/logado/inicio");
 
         } catch (error: any) {
+            // DEFINIÇÃO DA VARIÁVEL QUE ESTAVA FALTANDO:
             let errorMessage = "Erro ao tentar entrar.";
 
             if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
                 errorMessage = "Usuário ou senha incorretos.";
             } else if (error.code === 'auth/too-many-requests') {
                 errorMessage = "Muitas tentativas. Tente novamente mais tarde.";
+            } else if (error.code === 'auth/invalid-email') {
+                errorMessage = "O formato do e-mail é inválido.";
             }
 
             showAlert('error', 'Erro no Login', errorMessage);
