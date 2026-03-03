@@ -66,7 +66,7 @@ export default function CidadesScreen() {
                                         <TouchableOpacity 
                                             style={styles.cityCardHeader} 
                                             onPress={() => toggleExpand(cidade.nome)}
-                                            activeOpacity={0.6} // Ajustado para não clarear demais
+                                            activeOpacity={0.6} 
                                         >
                                             <View style={styles.cityIndicator} />
                                             <ThemedText style={styles.cityName}>{cidade.nome}</ThemedText>
