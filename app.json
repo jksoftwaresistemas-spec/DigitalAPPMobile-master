@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "DIGITAL NET",
+    "slug": "digital-net-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "digitalnet",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.digitalnet.app"
+    },
+    "android": {
+      "package": "com.digitalnet.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#091e56",
+        "foregroundImage": "./assets/images/android-icon-foreground.png"
+      },
+      "edgeToEdgeEnabled": true
+    },
+    "updates": {
+      "enabled": false
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#091e56",
+          "dark": {
+            "backgroundColor": "#050f2b"
+          }
+        }
+      ],
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
